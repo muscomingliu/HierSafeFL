@@ -216,10 +216,10 @@ def HierFAVG(args):
     if args.show_dis:
         for i in range(args.num_clients):
             train_loader = train_loaders[i]
-            print(len(train_loader.dataset))
+            # print(len(train_loader.dataset))
             distribution = show_distribution(train_loader, args)
-            print("train dataloader {} distribution".format(i))
-            print(distribution)
+            # print("train dataloader {} distribution".format(i))
+            # print(distribution)
 
         for i in range(args.num_clients):
             test_loader = test_loaders[i]
