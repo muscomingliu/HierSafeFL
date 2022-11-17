@@ -13,15 +13,15 @@ def average_weights(w, s_num):
         w_avg[k] = torch.mul(w_avg[k], temp_sample_num/total_sample_num)
     return w_avg
 
-
-# def average_weights(w, s_num):
-#     #copy the first client's weights
-#     total_sample_num = sum(s_num)
-#     temp_sample_num = s_num[0]
-#     w_median = copy.deepcopy(w[0])
+def median_weights(w, s_num):
+    #copy the first client's weights
+    total_sample_num = sum(s_num)
+    temp_sample_num = s_num[0]
+    w_median = copy.deepcopy(w[0])
     
-#     for k in w_median.keys():  #the nn layer loop
-#         tmp = [w[i][k] for i in range(len(w))]
-#         tmp = torch.stack(tmp).median(dim=0).values
-#         w_median[k] = tmp
-#     return w_median
+    for k in w_median.keys():  #the nn layer loop
+        tmp = [w[i][k] for i in range(len(w))]
+        tmp = torch.stack(tmp).median(dim=0).values
+        w_median[k] = tmp
+    return w_median
+

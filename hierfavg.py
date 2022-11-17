@@ -224,11 +224,11 @@ def HierFAVG(args):
         for i in range(args.num_clients):
             test_loader = test_loaders[i]
             test_size = len(test_loaders[i].dataset)
-            print(len(test_loader.dataset))
+            # print(len(test_loader.dataset))
             distribution = show_distribution(test_loader, args)
-            print("test dataloader {} distribution".format(i))
-            print(f"test dataloader size {test_size}")
-            print(distribution)
+            # print("test dataloader {} distribution".format(i))
+            # print(f"test dataloader size {test_size}")
+            # print(distribution)
     # initialize clients and server
     clients = []
     for i in range(args.num_clients):
