@@ -37,7 +37,7 @@ class Client():
         for epoch in range(iter):
             for data in self.train_loader:
                 inputs, labels = data
-                if self.id >= 15:
+                if not self.honest:
                     labels.apply_(lambda x: 7)
                 inputs = Variable(inputs).to(device)
                 labels = Variable(labels).to(device)

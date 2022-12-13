@@ -166,6 +166,13 @@ def args_parser():
         default=0,
         type=int
     )
+    
+    parser.add_argument(
+        '--num_honest_clients',
+        type = int,
+        default = 10,
+        help = 'number of all honest clients'
+    )
 
 
     args = parser.parse_args()

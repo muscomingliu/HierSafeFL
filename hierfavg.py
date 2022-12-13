@@ -231,7 +231,7 @@ def HierFAVG(args):
     # initialize clients and server
     clients = []
     for i in range(args.num_clients):
-        honest = True
+        honest = i < args.num_honest_clients
         clients.append(Client(id=i,
                               train_loader=train_loaders[i],
                               test_loader=test_loaders[i],
