@@ -15,7 +15,6 @@ from models.mnist_cnn import mnist_lenet
 from models.cifar_cnn_3conv_layer import cifar_cnn_3conv
 from models.cifar_resnet import ResNet18
 from models.mnist_logistic import LogisticRegression
-import os
 
 
 def get_client_class(args, clients):
@@ -232,12 +231,15 @@ def HierFAVG(args):
     # initialize clients and server
     clients = []
     for i in range(args.num_clients):
+        honest = True
         clients.append(Client(id=i,
                               train_loader=train_loaders[i],
                               test_loader=test_loaders[i],
                               args=args,
-                              device=device)
-                       )
+                              device=device,
+                              honest=honest,
+                        )
+                    )
 
     initilize_parameters = list(clients[0].model.shared_layers.parameters())
     nc = len(initilize_parameters)
@@ -273,14 +275,15 @@ def HierFAVG(args):
             cids = list (set(cids) - set(selected_cids))
             edges.append(Edge(id = i,
                               cids = selected_cids,
-                              shared_layers = copy.deepcopy(clients[0].model.shared_layers)))
+                              shared_layers = copy.deepcopy(clients[0].model.shared_layers),
+                              device=device))
             [edges[i].client_register(clients[cid]) for cid in selected_cids]
             edges[i].all_trainsample_num = sum(edges[i].sample_registration.values())
             p_clients[i] = [sample / float(edges[i].all_trainsample_num) for sample in
                     list(edges[i].sample_registration.values())]
             edges[i].refresh_edgeserver()
     # Initialize cloud server
-    cloud = Cloud(shared_layers=copy.deepcopy(clients[0].model.shared_layers))
+    cloud = Cloud(shared_layers=copy.deepcopy(clients[0].model.shared_layers), device = device)
     # First the clients report to the edge server their training samples
     [cloud.edge_register(edge=edge) for edge in edges]
     p_edge = [sample / sum(cloud.sample_registration.values()) for sample in
@@ -340,6 +343,8 @@ def HierFAVG(args):
         for edge in edges:
             edge.send_to_cloudserver(cloud)
         cloud.aggregate(args)
+        # if num_comm % 10 == 0:
+            # print(cloud.client_reputation)
         for edge in edges:
             cloud.send_to_edge(edge)
 

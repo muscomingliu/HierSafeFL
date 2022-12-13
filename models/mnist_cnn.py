@@ -10,6 +10,7 @@ class mnist_lenet(nn.Module):
         self.conv2_drop = nn.Dropout2d()
         self.fc1 = nn.Linear(320,50)
         self.fc2 = nn.Linear(50, output_channels)
+        self.name_layer = {'conv1':self.conv1, 'conv2':self.conv2, 'conv2_drop': self.conv2_drop, 'fc1':self.fc1, 'fc2':self.fc2}
 
     def forward(self, x):
         x = self.conv1(x)

@@ -38,6 +38,7 @@ class MTL_Model(object):
                                   weight_decay=weight_decay)
         self.optimizer_state_dict = self.optimizer.state_dict()
         self.criterion = nn.CrossEntropyLoss()
+        self.repuation = 1
 
     def exp_lr_sheduler(self, epoch):
         """"""
@@ -93,7 +94,8 @@ class MTL_Model(object):
         return output_batch
 
     def update_model(self, new_shared_layers):
-        self.shared_layers.load_state_dict(new_shared_layers)
+        self.shared_layers.load_state_dict(new_shared_layers['shared_state_dict'])
+        # self.learning_rate = new_shared_layers['learning_rate'] 
 
 def initialize_model(args, device):
     if args.mtl_model:
